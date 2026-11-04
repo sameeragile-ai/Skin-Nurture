@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles, Filter, ShieldCheck, HeartHandshake, PhoneCall } from 'lucide-react';
-import { TREATMENTS, Treatment } from '../data/treatments';
+import { Sparkles, ShieldCheck, HeartHandshake, PhoneCall, Calendar } from 'lucide-react';
+import { TREATMENTS } from '../data/treatments';
 import { TreatmentCard } from '../components/TreatmentCard';
-import { createWhatsAppConsultUrl, CLINIC_INFO } from '../utils/constants';
+import { createWhatsAppConsultUrl } from '../utils/constants';
+import { useBooking } from '../context/BookingContext';
 
 type CategoryFilter = 'All' | 'Packages' | 'Skin' | 'Hair' | 'Aesthetic' | 'Laser';
 
@@ -12,6 +13,7 @@ const CATEGORIES: CategoryFilter[] = ['All', 'Packages', 'Skin', 'Hair', 'Aesthe
 
 export const Treatments: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { openBooking } = useBooking();
   const initialCategory = (searchParams.get('category') as CategoryFilter) || 'All';
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>(
     CATEGORIES.includes(initialCategory) ? initialCategory : 'All'
@@ -48,10 +50,10 @@ export const Treatments: React.FC = () => {
             Dermatology & Medical Aesthetics Menu
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#0F4C3A]">
-            Clinical Treatments & Packages
+            Clinical Treatments & Protocols
           </h1>
           <p className="text-xs sm:text-sm md:text-base text-neutral-600 font-light leading-relaxed">
-            Every procedure at Skin Nurture Clinic is administered or directly supervised by <strong className="text-neutral-900 font-medium">Dr. Hina Faisal</strong>, following evidence-based protocols, sterile conditions, and medical-grade diagnostics.
+            Every procedure at Skin Nurture Clinic is administered or directly supervised by <strong className="text-neutral-900 font-semibold">Dr. Hina Faisal</strong>, following evidence-based clinical protocols, single-use sterile consumables, and medical-grade equipment.
           </p>
 
           <div className="pt-2 flex flex-wrap items-center justify-center gap-4 text-xs text-neutral-500">
@@ -67,7 +69,7 @@ export const Treatments: React.FC = () => {
             <span aria-hidden="true">·</span>
             <span className="flex items-center gap-1.5">
               <HeartHandshake className="w-4 h-4 text-[#C5A059]" />
-              <span>Personalized Follow-Ups</span>
+              <span>Strict Barrier Preservation</span>
             </span>
           </div>
         </div>
@@ -85,7 +87,7 @@ export const Treatments: React.FC = () => {
                     : 'text-neutral-600 hover:text-[#0F4C3A] hover:bg-[#FAF7F2]'
                 }`}
               >
-                {cat === 'All' ? 'All Treatments & Packages' : cat}
+                {cat === 'All' ? 'All Treatments & Packages' : cat === 'Packages' ? 'Pre-Wedding Packages' : `${cat} Care`}
               </button>
             ))}
           </div>
@@ -124,19 +126,28 @@ export const Treatments: React.FC = () => {
               Schedule a Diagnostic Consultation
             </h3>
             <p className="text-xs text-[#FAF7F2]/80 max-w-xl font-light">
-              Dr. Hina Faisal provides a full microscopic dermoscopy scan, root cause analysis, and a customized treatment prescription. Fee is Rs. 2,000 (complimentary when enrolling in a package).
+              Dr. Hina Faisal provides a full microscopic dermoscopy scan, root cause analysis, and a customized treatment prescription. Initial consultation fee is Rs. 2,000 (complimentary when enrolling in a package).
             </p>
           </div>
 
-          <a
-            href={createWhatsAppConsultUrl("Hello Dr. Hina! I would like help deciding on the best clinical treatment protocol for my skin/hair concern.")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-6 py-3.5 bg-gradient-to-r from-[#C5A059] to-[#B88E3A] hover:from-[#DDB66B] hover:to-[#C5A059] text-[#0C3B2E] font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all shrink-0 flex items-center gap-2"
-          >
-            <PhoneCall className="w-4 h-4" />
-            <span>Consult Via WhatsApp</span>
-          </a>
+          <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+            <button
+              onClick={() => openBooking()}
+              className="px-6 py-3.5 bg-gradient-to-r from-[#C5A059] to-[#B88E3A] hover:from-[#DDB66B] hover:to-[#C5A059] text-[#0C3B2E] font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
+            >
+              <Calendar className="w-4 h-4" />
+              <span>Book Appointment</span>
+            </button>
+            <a
+              href={createWhatsAppConsultUrl("Hello Dr. Hina! I would like help deciding on the best clinical treatment protocol for my skin/hair concern.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-3.5 bg-white/10 hover:bg-white/15 text-white font-semibold text-xs uppercase tracking-wider rounded-xl border border-white/20 transition-all flex items-center justify-center gap-2"
+            >
+              <PhoneCall className="w-4 h-4 text-[#C5A059]" />
+              <span>WhatsApp Desk</span>
+            </a>
+          </div>
         </div>
       </section>
     </div>

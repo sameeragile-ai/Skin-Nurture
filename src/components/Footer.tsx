@@ -73,10 +73,10 @@ export const Footer: React.FC = () => {
                 <Link to="/treatments" className="hover:text-white transition-colors">Clinical Treatments</Link>
               </li>
               <li>
-                <Link to="/treatments?category=Packages" className="hover:text-white transition-colors">Bridal & Glow Packages</Link>
+                <Link to="/packages" className="hover:text-white transition-colors">Pre-Wedding Packages</Link>
               </li>
               <li>
-                <Link to="/shop" className="hover:text-white transition-colors">Skincare Boutique</Link>
+                <Link to="/book" className="hover:text-white transition-colors">Book Consultation</Link>
               </li>
               <li>
                 <Link to="/about" className="hover:text-white transition-colors">Meet Dr. Hina Faisal</Link>

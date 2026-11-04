@@ -1,11 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
-import { CartProvider } from './context/CartContext';
+import { BookingProvider } from './context/BookingContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import { CartDrawer } from './components/CartDrawer';
-import { Toast } from './components/Toast';
+import { BookingModal } from './components/BookingModal';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { Loader } from './components/Loader';
 import { ScrollToTop } from './components/ScrollToTop';
@@ -13,12 +12,11 @@ import { ScrollToTop } from './components/ScrollToTop';
 // Pages
 import { Home } from './pages/Home';
 import { Treatments } from './pages/Treatments';
-import { Shop } from './pages/Shop';
-import { ProductDetail } from './pages/ProductDetail';
+import { Packages } from './pages/Packages';
+import { BookAppointment } from './pages/BookAppointment';
 import { About } from './pages/About';
 import { Results } from './pages/Results';
 import { Contact } from './pages/Contact';
-import { Checkout } from './pages/Checkout';
 import { NotFound } from './pages/NotFound';
 
 const AnimatedRoutes: React.FC = () => {
@@ -37,12 +35,15 @@ const AnimatedRoutes: React.FC = () => {
         <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/treatments" element={<Treatments />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/shop/:id" element={<ProductDetail />} />
+          <Route path="/packages" element={<Packages />} />
+          <Route path="/book" element={<BookAppointment />} />
           <Route path="/about" element={<About />} />
           <Route path="/results" element={<Results />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/checkout" element={<Checkout />} />
+          {/* Graceful redirects for any legacy links */}
+          <Route path="/shop" element={<Navigate to="/treatments" replace />} />
+          <Route path="/shop/:id" element={<Navigate to="/treatments" replace />} />
+          <Route path="/checkout" element={<Navigate to="/book" replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </motion.div>
@@ -52,7 +53,7 @@ const AnimatedRoutes: React.FC = () => {
 
 export default function App() {
   return (
-    <CartProvider>
+    <BookingProvider>
       <Router>
         <ScrollToTop />
         <Loader />
@@ -62,11 +63,10 @@ export default function App() {
             <AnimatedRoutes />
           </main>
           <Footer />
-          <CartDrawer />
-          <Toast />
+          <BookingModal />
           <FloatingWhatsApp />
         </div>
       </Router>
-    </CartProvider>
+    </BookingProvider>
   );
 }

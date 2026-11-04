@@ -1,8 +1,8 @@
 import React from 'react';
-import { Sparkles, Clock, Check, ShoppingBag, ArrowRight } from 'lucide-react';
+import { Clock, Check, Calendar, MessageCircle, ArrowRight } from 'lucide-react';
 import { Treatment } from '../data/treatments';
 import { formatPKR, createWhatsAppConsultUrl } from '../utils/constants';
-import { useCart } from '../context/CartContext';
+import { useBooking } from '../context/BookingContext';
 
 interface TreatmentCardProps {
   treatment: Treatment;
@@ -10,21 +10,15 @@ interface TreatmentCardProps {
 }
 
 export const TreatmentCard: React.FC<TreatmentCardProps> = ({ treatment, onSelect }) => {
-  const { addItem } = useCart();
+  const { openBooking } = useBooking();
 
-  const handleAddPackage = (e: React.MouseEvent) => {
+  const handleBook = (e: React.MouseEvent) => {
     e.preventDefault();
-    e.stopPropagation();
-    addItem({
-      id: treatment.id,
-      name: treatment.name,
-      subtitle: treatment.duration,
-      price: treatment.price,
-      image: treatment.image,
-      quantity: 1,
-      type: 'treatment',
-      sizeOrDuration: treatment.duration,
-    });
+    if (onSelect) {
+      onSelect(treatment);
+    } else {
+      openBooking(treatment);
+    }
   };
 
   return (
@@ -87,7 +81,7 @@ export const TreatmentCard: React.FC<TreatmentCardProps> = ({ treatment, onSelec
           <div className="flex items-baseline justify-between">
             <div>
               <span className="text-[10px] text-neutral-400 uppercase tracking-widest block">
-                {treatment.isPackage ? 'Package Price' : 'Session Fee'}
+                {treatment.isPackage ? 'Clinical Package Fee' : 'Treatment Session'}
               </span>
               <div className="flex items-baseline gap-2">
                 <span className="font-mono text-xl font-bold text-[#0F4C3A]">
@@ -103,28 +97,28 @@ export const TreatmentCard: React.FC<TreatmentCardProps> = ({ treatment, onSelec
 
             {treatment.originalPrice && (
               <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
-                Save {formatPKR(treatment.originalPrice - treatment.price)}
+                Package Save {formatPKR(treatment.originalPrice - treatment.price)}
               </span>
             )}
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <button
-              onClick={handleAddPackage}
+              onClick={handleBook}
               className="py-2.5 px-3 bg-[#0F4C3A] hover:bg-[#0C3B2E] text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-colors"
             >
-              <ShoppingBag className="w-3.5 h-3.5 text-[#C5A059]" />
-              <span>Book / Add</span>
+              <Calendar className="w-3.5 h-3.5 text-[#C5A059]" />
+              <span>Book Visit</span>
             </button>
 
             <a
-              href={createWhatsAppConsultUrl(`Hello Dr. Hina Faisal! I am interested in inquiring about ${treatment.name} at Skin Nurture Clinic.`)}
+              href={createWhatsAppConsultUrl(`Hello Dr. Hina Faisal! I would like to inquire about booking ${treatment.name} at your Autobhan Road clinic.`)}
               target="_blank"
               rel="noopener noreferrer"
               className="py-2.5 px-3 border border-[#C5A059] text-[#0F4C3A] hover:bg-[#C5A059]/10 rounded-xl text-xs font-semibold flex items-center justify-center gap-1 transition-colors"
             >
-              <Sparkles className="w-3 h-3 text-[#C5A059]" />
-              <span>Inquire</span>
+              <MessageCircle className="w-3 h-3 text-[#25D366]" />
+              <span>WhatsApp</span>
             </a>
           </div>
         </div>
