@@ -1,0 +1,7 @@
+{
+  "name": "Skin Nurture Clinic",
+  "description": "Luxury Dermatology & Aesthetics Clinic in Hyderabad led by Dr. Hina Faisal. Expert skin and hair clinical treatments, medical-grade skincare, and bespoke aesthetic care.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
